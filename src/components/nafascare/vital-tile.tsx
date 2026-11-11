@@ -55,15 +55,13 @@ export function VitalTile({ label, unit, source, flag, valueClassName, value, me
       )}
       aria-label={label}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="leading-tight">
-          <div className="label-caps">{label}</div>
-          <div className="text-[11px] text-muted-foreground">{unit}</div>
-        </div>
-        <div className="flex items-center gap-1.5">
-          {flag && <FlagTag level={flag} />}
-          <span className="rounded-sm border border-border px-1.5 py-px font-mono text-[10px] text-muted-foreground">{source}</span>
-        </div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="label-caps truncate">{label}</div>
+        <span className="shrink-0 rounded-sm border border-border px-1.5 py-px font-mono text-[10px] text-muted-foreground">{source}</span>
+      </div>
+      <div className="mt-0.5 flex h-4 items-center justify-between gap-2">
+        <div className="truncate text-[11px] text-muted-foreground">{unit}</div>
+        {flag && <FlagTag level={flag} />}
       </div>
       <div className={cn("mt-1.5 font-numeric text-5xl font-medium leading-none tabular-nums", valueClassName)}>{value}</div>
       {meta && <div className="mt-1 text-[11px] text-muted-foreground">{meta}</div>}

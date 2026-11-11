@@ -112,7 +112,7 @@ function EhgCanvas({ status, params, sessionId }: { status: RunStatus; params: E
       ctx.beginPath();
       let pen = false;
       for (let x = 0; x < width; x++) {
-        const v = buffer[x];
+        const v = buffer[x] ?? Number.NaN;
         const inGap = (x - cursor + width) % width < gap;
         if (inGap || Number.isNaN(v)) {
           pen = false;
@@ -128,7 +128,7 @@ function EhgCanvas({ status, params, sessionId }: { status: RunStatus; params: E
       ctx.stroke();
 
       const lead = (cursor - 1 + width) % width;
-      const lv = buffer[lead];
+      const lv = buffer[lead] ?? Number.NaN;
       if (!Number.isNaN(lv)) {
         ctx.fillStyle = colors.trace;
         ctx.beginPath();

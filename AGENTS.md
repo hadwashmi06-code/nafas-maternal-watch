@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- NafasCare dashboard is client-only simulation: all state lives in `src/hooks/use-nafas-simulation.ts` (pure reducer, randomness passed in via actions) — keeps behaviour deterministic and testable with no backend.
+- Scenario values live in `src/lib/nafascare/scenarios.ts` and review-prompt thresholds in `src/lib/nafascare/review-rules.ts` (covered by `src/test/review-rules.test.ts`) — one source of truth for every displayed value and prompt.
+- The EHG waveform is drawn on a canvas with requestAnimationFrame in `ehg-panel.tsx`, decoupled from the 1 s vitals tick — keeps the trace smooth without re-rendering React each frame.

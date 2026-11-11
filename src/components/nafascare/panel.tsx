@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 
 interface PanelProps {
   title: ReactNode;
-  icon?: ReactNode;
-  actions?: ReactNode;
+  icon?: ReactNode | undefined;
+  actions?: ReactNode | undefined;
   children: ReactNode;
-  className?: string;
-  bodyClassName?: string;
+  className?: string | undefined;
+  bodyClassName?: string | undefined;
 }
 
 export function Panel({ title, icon, actions, children, className, bodyClassName }: PanelProps) {
