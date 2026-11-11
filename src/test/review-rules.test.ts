@@ -25,3 +25,16 @@ describe("demo review prompts", () => {
     expect(evaluateReview({ ...fromScenario("stable"), ebl: 500 }).level).toBe("review");
   });
 });
+
+describe("review prompt wording", () => {
+  it("formats full and compact messages", () => {
+    const r = evaluateReview({ hr: 126, sys: 86, spo2: 92, ebl: 1150 }).reasons;
+    expect(r.map((x) => x.message)).toEqual([
+      "HR 126 bpm ≥ demo threshold 120",
+      "Systolic BP 86 mmHg < demo threshold 90",
+      "SpO₂ 92% < demo threshold 94%",
+      "Recorded EBL 1150 mL ≥ demo threshold 1000 mL",
+    ]);
+    expect(r.map((x) => x.short)).toEqual(["HR 126 ≥ 120", "SBP 86 < 90", "SpO₂ 92 < 94", "EBL 1150 ≥ 1000 mL"]);
+  });
+});

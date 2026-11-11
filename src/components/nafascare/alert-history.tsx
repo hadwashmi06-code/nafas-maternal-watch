@@ -7,18 +7,18 @@ import { cn } from "@/lib/utils";
 import { ControlButton } from "./control-button";
 import { Panel } from "./panel";
 
-const SEV: Record<AlertSeverity, { bar: string; tag: string; label: string }> = {
-  urgent: { bar: "bg-status-urgent", tag: "text-status-urgent", label: "Urgent review" },
-  review: { bar: "bg-status-review", tag: "text-status-review", label: "Clinical review" },
-  technical: { bar: "bg-status-technical", tag: "text-status-technical", label: "Technical" },
-  info: { bar: "bg-status-ok", tag: "text-status-ok", label: "Information" },
+const SEV: Record<AlertSeverity, { bar: string; text: string }> = {
+  urgent: { bar: "bg-status-urgent", text: "text-status-urgent" },
+  review: { bar: "bg-status-review", text: "text-status-review" },
+  technical: { bar: "bg-status-technical", text: "text-status-technical" },
+  info: { bar: "bg-status-ok", text: "text-status-ok" },
 };
 
 interface Props {
   alerts: AlertItem[];
   onAck: (id: number) => void;
   onAckAll: () => void;
-  className?: string;
+  className?: string | undefined;
 }
 
 export function AlertHistory({ alerts, onAck, onAckAll, className }: Props) {
@@ -47,31 +47,27 @@ export function AlertHistory({ alerts, onAck, onAckAll, className }: Props) {
       {alerts.length === 0 ? (
         <p className="px-3 py-6 text-center text-xs text-muted-foreground">No alerts recorded this session.</p>
       ) : (
-        <ul>
+        <ul className="divide-y divide-border">
           {alerts.map((a) => {
             const s = SEV[a.severity];
             return (
-              <li key={a.id} className={cn("flex gap-2.5 border-b border-border px-3 py-2", a.acknowledged && "opacity-60")}>
-                <span className={cn("w-0.5 shrink-0 self-stretch rounded-full", s.bar)} aria-hidden />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-semibold">{a.title}</span>
-                    <span className="font-mono text-[10px] text-muted-foreground">{formatClock(a.wall)}</span>
-                  </div>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">{a.detail}</p>
-                  <div className="mt-1 flex items-center justify-between gap-2">
-                    <span className={cn("text-[10px] font-semibold uppercase tracking-wider", s.tag)}>{s.label}</span>
-                    {a.acknowledged ? (
-                      <span className="text-[10px] text-muted-foreground">
-                        Acknowledged {a.ackWall ? formatClock(a.ackWall) : ""}
-                      </span>
-                    ) : (
-                      <ControlButton size="sm" variant="secondary" className="h-5 px-2 text-[10px]" onClick={() => onAck(a.id)}>
-                        Acknowledge
-                      </ControlButton>
-                    )}
-                  </div>
+              <li
+                key={a.id}
+                className={cn("grid grid-cols-[3px_56px_minmax(0,1fr)_auto] items-center gap-2.5 px-3 py-1.5", a.acknowledged && "opacity-55")}
+              >
+                <span className={cn("h-full min-h-4 rounded-full", s.bar)} aria-hidden />
+                <span className="font-mono text-[10px] tabular-nums text-muted-foreground">{formatClock(a.wall)}</span>
+                <div className="min-w-0 text-[11px] leading-snug">
+                  <div className={cn("truncate font-semibold", s.text)}>{a.title}</div>
+                  <div className="truncate text-muted-foreground">{a.detail}</div>
                 </div>
+                {a.acknowledged ? (
+                  <span className="font-mono text-[10px] text-muted-foreground">ACK {a.ackWall ? formatClock(a.ackWall) : ""}</span>
+                ) : (
+                  <ControlButton size="sm" variant="secondary" className="h-5 px-2 text-[10px]" onClick={() => onAck(a.id)}>
+                    Acknowledge
+                  </ControlButton>
+                )}
               </li>
             );
           })}

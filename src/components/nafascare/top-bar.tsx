@@ -50,8 +50,12 @@ export function TopBar({ status, sensors }: { status: RunStatus; sensors: Record
           <div className="text-[11px] text-muted-foreground">Postpartum Maternal Monitoring</div>
         </div>
         <div className="mx-2 hidden h-6 w-px bg-border md:block" />
-        <div className="hidden text-xs text-muted-foreground md:block">
-          Postnatal Unit · <span className="text-foreground">Bed 04</span>
+        <div className="hidden items-baseline gap-3 text-xs md:flex">
+          <span className="font-semibold text-foreground">Demo Patient A</span>
+          <span className="font-mono text-muted-foreground">SIM-000427</span>
+          <span className="text-muted-foreground">
+            Postnatal Unit · <span className="text-foreground">Bed 04</span>
+          </span>
         </div>
       </div>
 

@@ -38,6 +38,8 @@ export interface Scenario {
   eblPreset: number;
   ehg: EhgParams;
   ehgPattern: string;
+  /** Relative pleth waveform amplitude (display only) */
+  plethAmplitude: number;
   sensors: Record<SensorId, SensorReading>;
 }
 
@@ -50,6 +52,7 @@ export const SCENARIOS: Record<ScenarioId, Scenario> = {
     eblPreset: 300,
     ehg: { amplitude: 1, period: 12, irregularity: 0.06, noise: 0.05, width: 1.9 },
     ehgPattern: "Regular bursts",
+    plethAmplitude: 1,
     sensors: {
       ehg: { state: "connected", note: "Good signal · 4/4 ch" },
       ecg: { state: "connected", note: "Good signal" },
@@ -65,6 +68,7 @@ export const SCENARIOS: Record<ScenarioId, Scenario> = {
     eblPreset: 650,
     ehg: { amplitude: 0.6, period: 16, irregularity: 0.28, noise: 0.08, width: 1.7 },
     ehgPattern: "Lower amplitude, irregular",
+    plethAmplitude: 0.8,
     sensors: {
       ehg: { state: "degraded", note: "Signal quality fair · 3/4 ch" },
       ecg: { state: "connected", note: "Good signal" },
@@ -80,6 +84,7 @@ export const SCENARIOS: Record<ScenarioId, Scenario> = {
     eblPreset: 1150,
     ehg: { amplitude: 0.34, period: 20, irregularity: 0.45, noise: 0.11, width: 1.5 },
     ehgPattern: "Low amplitude, irregular",
+    plethAmplitude: 0.55,
     sensors: {
       ehg: { state: "degraded", note: "Signal quality fair · 3/4 ch" },
       ecg: { state: "connected", note: "Good signal" },

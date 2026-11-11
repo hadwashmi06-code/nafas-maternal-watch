@@ -22,6 +22,8 @@ export interface ReviewReason {
   param: ReviewParam;
   level: Exclude<ReviewLevel, "none">;
   message: string;
+  /** Compact form for the monitor alarm bar, e.g. "HR 126 ≥ 120" */
+  short: string;
 }
 
 export interface ReviewInput {
@@ -36,25 +38,39 @@ export interface ReviewResult {
   reasons: ReviewReason[];
 }
 
-function reason(param: ReviewParam, level: "review" | "urgent", message: string): ReviewReason {
-  return { key: `${param}:${level}`, param, level, message };
+const META: Record<ReviewParam, { name: string; short: string; unit: string; op: "≥" | "<" }> = {
+  hr: { name: "HR", short: "HR", unit: " bpm", op: "≥" },
+  sys: { name: "Systolic BP", short: "SBP", unit: " mmHg", op: "<" },
+  spo2: { name: "SpO₂", short: "SpO₂", unit: "%", op: "<" },
+  ebl: { name: "Recorded EBL", short: "EBL", unit: " mL", op: "≥" },
+};
+
+function reason(param: ReviewParam, level: "review" | "urgent", value: number, threshold: number): ReviewReason {
+  const m = META[param];
+  return {
+    key: `${param}:${level}`,
+    param,
+    level,
+    message: `${m.name} ${value}${m.unit} ${m.op} demo threshold ${threshold}${m.unit.trim() === "%" ? "%" : param === "ebl" ? " mL" : ""}`,
+    short: `${m.short} ${value} ${m.op} ${threshold}${param === "ebl" ? " mL" : ""}`,
+  };
 }
 
 export function evaluateReview({ hr, sys, spo2, ebl }: ReviewInput): ReviewResult {
   const t = DEMO_THRESHOLDS;
   const reasons: ReviewReason[] = [];
 
-  if (hr >= t.hr.urgent) reasons.push(reason("hr", "urgent", `HR ${hr} bpm ≥ demo threshold ${t.hr.urgent}`));
-  else if (hr >= t.hr.review) reasons.push(reason("hr", "review", `HR ${hr} bpm ≥ demo threshold ${t.hr.review}`));
+  if (hr >= t.hr.urgent) reasons.push(reason("hr", "urgent", hr, t.hr.urgent));
+  else if (hr >= t.hr.review) reasons.push(reason("hr", "review", hr, t.hr.review));
 
-  if (sys < t.sys.urgent) reasons.push(reason("sys", "urgent", `Systolic BP ${sys} mmHg < demo threshold ${t.sys.urgent}`));
-  else if (sys < t.sys.review) reasons.push(reason("sys", "review", `Systolic BP ${sys} mmHg < demo threshold ${t.sys.review}`));
+  if (sys < t.sys.urgent) reasons.push(reason("sys", "urgent", sys, t.sys.urgent));
+  else if (sys < t.sys.review) reasons.push(reason("sys", "review", sys, t.sys.review));
 
-  if (spo2 < t.spo2.urgent) reasons.push(reason("spo2", "urgent", `SpO₂ ${spo2}% < demo threshold ${t.spo2.urgent}%`));
-  else if (spo2 < t.spo2.review) reasons.push(reason("spo2", "review", `SpO₂ ${spo2}% < demo threshold ${t.spo2.review}%`));
+  if (spo2 < t.spo2.urgent) reasons.push(reason("spo2", "urgent", spo2, t.spo2.urgent));
+  else if (spo2 < t.spo2.review) reasons.push(reason("spo2", "review", spo2, t.spo2.review));
 
-  if (ebl >= t.ebl.urgent) reasons.push(reason("ebl", "urgent", `Recorded EBL ${ebl} mL ≥ demo threshold ${t.ebl.urgent} mL`));
-  else if (ebl >= t.ebl.review) reasons.push(reason("ebl", "review", `Recorded EBL ${ebl} mL ≥ demo threshold ${t.ebl.review} mL`));
+  if (ebl >= t.ebl.urgent) reasons.push(reason("ebl", "urgent", ebl, t.ebl.urgent));
+  else if (ebl >= t.ebl.review) reasons.push(reason("ebl", "review", ebl, t.ebl.review));
 
   const level: ReviewLevel = reasons.some((r) => r.level === "urgent")
     ? "urgent"
