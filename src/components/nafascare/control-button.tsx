@@ -24,5 +24,7 @@ const controlButton = cva(
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof controlButton>;
 
 export function ControlButton({ className, variant, size, type = "button", ...props }: Props) {
-  return <button type={type} className={cn(controlButton({ variant, size }), className)} {...props} />;
+  return (
+    <button type={type} className={cn(controlButton({ variant, size }), className)} {...props} />
+  );
 }

@@ -50,6 +50,9 @@
   --color-signal-hr: var(--signal-hr);
   --color-signal-spo2: var(--signal-spo2);
   --color-signal-nibp: var(--signal-nibp);
+  --color-signal-rr: var(--signal-rr);
+  --color-signal-temp: var(--signal-temp);
+  --color-signal-ebl: var(--signal-ebl);
   --color-status-ok: var(--status-ok);
   --color-status-review: var(--status-review);
   --color-status-review-foreground: var(--status-review-foreground);
@@ -105,6 +108,9 @@
   --signal-hr: oklch(0.8 0.17 142);
   --signal-spo2: oklch(0.83 0.12 212);
   --signal-nibp: oklch(0.95 0.004 248);
+  --signal-rr: oklch(0.86 0.09 182);
+  --signal-temp: oklch(0.86 0.035 250);
+  --signal-ebl: oklch(0.95 0.004 248);
 
   /* Status colours */
   --status-ok: oklch(0.76 0.14 150);

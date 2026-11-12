@@ -21,7 +21,16 @@ interface SweepTraceProps {
  * Monitor-style sweeping trace. Samples are pulled from `source` only while
  * running; the canvas is redrawn every animation frame. Remount to clear.
  */
-export function SweepTrace({ source, status, windowS, min, max, colorVar, grid = false, label }: SweepTraceProps) {
+export function SweepTrace({
+  source,
+  status,
+  windowS,
+  min,
+  max,
+  colorVar,
+  grid = false,
+  label,
+}: SweepTraceProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const statusRef = useRef(status);

@@ -9,12 +9,24 @@ interface PanelProps {
   children: ReactNode;
   className?: string | undefined;
   bodyClassName?: string | undefined;
+  "aria-label"?: string | undefined;
 }
 
-export function Panel({ title, icon, actions, children, className, bodyClassName }: PanelProps) {
+export function Panel({
+  title,
+  icon,
+  actions,
+  children,
+  className,
+  bodyClassName,
+  ...rest
+}: PanelProps) {
   return (
-    <section className={cn("flex min-h-0 flex-col rounded-md border border-border bg-card", className)}>
-      <header className="flex h-9 shrink-0 items-center justify-between gap-2 border-b border-border px-3">
+    <section
+      aria-label={rest["aria-label"]}
+      className={cn("flex min-h-0 flex-col rounded-md border border-border bg-card", className)}
+    >
+      <header className="flex h-8 shrink-0 items-center justify-between gap-2 border-b border-border px-3">
         <div className="label-caps flex items-center gap-2">
           {icon}
           {title}

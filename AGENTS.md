@@ -33,4 +33,5 @@ use the editor.
 
 - NafasCare dashboard is client-only simulation: all state lives in `src/hooks/use-nafas-simulation.ts` (pure reducer, randomness passed in via actions) — keeps behaviour deterministic and testable with no backend.
 - Scenario values live in `src/lib/nafascare/scenarios.ts` and review-prompt thresholds in `src/lib/nafascare/review-rules.ts` (covered by `src/test/review-rules.test.ts`) — one source of truth for every displayed value and prompt.
+- Dashboard layout targets iPad landscape: from the `lg` breakpoint everything fits one viewport (no page scroll), and the expandable Additional monitoring panel shrinks before the EHG/vitals do; below `lg` it stacks and scrolls — keeps the core monitor always visible on a tablet.
 - Monitor traces (EHG, ECG, pleth) use the shared canvas `SweepTrace` driven by requestAnimationFrame and synth classes in `src/lib/nafascare/`, decoupled from the 1 s vitals tick; the trace group is keyed by sessionId so Reset clears it — keeps traces smooth without per-frame React renders.
